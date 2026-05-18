@@ -4,7 +4,7 @@ load_dotenv()
 
 
 def main():
-    print("Clau says Hello from langchain-course!")
+    print("Claudia says Hello from langchain-course!")
 
 
 if __name__ == "__main__":
