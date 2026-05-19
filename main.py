@@ -1,22 +1,26 @@
+from typing import Any
+
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_ollama import ChatOllama
 # from langchain_openai import ChatOpenAI
+from tavily import TavilyClient
 
 load_dotenv()
-
+tavily = TavilyClient()
 
 @tool
-def search(query: str) -> str:
+def search(query: str) -> dict[str, Any]:
     """
     Tool that searches over internet
     :param query: The query to search for
     :return: The search result
     """
     print(f"Searching for {query}")
-    return "Bucharest weather is sunny"
+    # return "Bucharest weather is sunny"
+    return tavily.search(query=query)
 
 
 llm = ChatOllama(model="gemma4", temperature=0.8)
