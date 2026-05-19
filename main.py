@@ -20,9 +20,9 @@ def main():
     2. 2 weird facts about it. 
     """
 
-    # temperature between 0 and 0.3 will set the llm response to be deterministic, and probably repeateable, while high value between 0.8 and 1, will get get very creative responses (e.g good for poetry)
+    # temperature between 0 and 0.3 will set the llm response to be deterministic, and probably repeatable, while high value between 0.8 and 1, will get very creative responses (e.g good for poetry)
     # llm = ChatOpenAI(temperature=0, model="gpt-5")
-    llm = ChatOllama(temperature=0, model="llama3")
+    llm = ChatOllama(temperature=0, model="gpt-oss")
 
     summary_prompt_template = PromptTemplate(input_variables=[information], template=summary_template)
     
