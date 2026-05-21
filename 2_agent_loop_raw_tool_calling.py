@@ -9,8 +9,6 @@ MAX_ITERATIONS = 10
 MODEL = "qwen3:1.7b"
 
 # --- Tools (LangChain @tool decorator) ---
-
-
 @traceable(run_type="tool")
 def get_product_price(product: str) -> float:
     """Look up the price of a product in the catalog."""
@@ -19,7 +17,8 @@ def get_product_price(product: str) -> float:
     prices = {"laptop": 1299.99, "headphones": 149.95, "keyboard": 89.50}
     return prices.get(product, 0)
 
-
+# Instead of tool decorator, we now have to manually trace the function for LangSmith,
+# and we lose the automatic schema generation from the function signature and docstring that @tool was doing for us.
 @traceable(run_type="tool")
 def apply_discount(price: float, discount_tier: str) -> float:
     """Apply a discount tier to a price and return the final price.
@@ -92,7 +91,8 @@ tools_for_llm = [
 
 
 # --- Helper: traced Ollama call ---
-# Difference 3: Without LangChain, we must manually trace LLM calls for LangSmith.
+# Difference 3: Without LangChain, we must manually trace LLM calls for LangSmith. With LangChain, the tracing is
+# automatic and unified across all providers, using init_chat_model
 
 @traceable(name="Ollama Chat", run_type="llm")
 def ollama_chat_traced(messages):
@@ -117,6 +117,9 @@ def run_agent(question: str):
     # the brain of the agent
     print(f"Question: {question}")
     print("=" * 60)
+    """
+    # The initial ReACT prompt pushed by the man who created LangChain
+    """
 
     messages = [
         # I don't have SystemMessage as in LangChain
@@ -177,6 +180,8 @@ def run_agent(question: str):
         # tool_call_id = tool_call.get("id")
 
         # Difference 6: Attribute access (.function.name) instead of dict access (.get("name"))
+        # tool call id is strictly required by OpenAI API, but not by Ollama sdk. LangChain was taking care of this
+        # returning a unified dictionary structure as above.
         tool_name = tool_call.function.name
         tool_args = tool_call.function.arguments
 
