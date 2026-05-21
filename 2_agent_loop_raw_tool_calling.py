@@ -18,7 +18,7 @@ def get_product_price(product: str) -> float:
     return prices.get(product, 0)
 
 # Instead of tool decorator, we now have to manually trace the function for LangSmith,
-# and we lose the automatic schema generation from the function signature and docstring that @tool was doing for us.
+# and we loose the automatic schema generation from the function signature and docstring that @tool was doing for us.
 @traceable(run_type="tool")
 def apply_discount(price: float, discount_tier: str) -> float:
     """Apply a discount tier to a price and return the final price.
