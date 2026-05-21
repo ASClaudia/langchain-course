@@ -115,8 +115,8 @@ def run_agent(question: str):
 
         print(f"  [Tool Result] {observation}")
 
-        # this is where the ai decision to run the tool and with which arguments and the result from the tool is sent
-        # back to the next llm call (together with the entire messages list)
+        # this is where the ai decision to run the tool (and exactly what tool id) and with which arguments and the
+        # result from the tool is sent back to the next llm call (together with the entire messages list)
         messages.append(ai_message)
         messages.append(
             ToolMessage(content=str(observation), tool_call_id=tool_call_id)
